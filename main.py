@@ -8,6 +8,8 @@ def on_button_pressed_a():
     elif state == "setup" and substate == 1:
         if address < 255:
             address += 1
+        else:
+            address = 0
 input.on_button_pressed(Button.A, on_button_pressed_a)
 
 def on_button_pressed_ab():
@@ -25,6 +27,15 @@ def on_received_string(receivedString):
         led.plot_bar_graph(Math.map(signal, -95, -42, 0, 9), 9)
         count = 0
 radio.on_received_string(on_received_string)
+
+def on_button_pressed_b():
+    global address
+    if state == "setup" and substate == 1:
+        if address > 0:
+            address += 0 - 1
+        else:
+            address = 255
+input.on_button_pressed(Button.B, on_button_pressed_b)
 
 count = 0
 signal = 0
@@ -49,12 +60,11 @@ def on_forever():
             radio.set_group(address)
             radio.set_transmit_power(7)
             state = "game"
-    else:
-        if me == "H":
-            basic.show_icon(IconNames.SMALL_HEART)
-            radio.send_string("hiding")
-            basic.pause(100)
-            basic.show_icon(IconNames.HEART)
-            basic.pause(100)
-            basic.clear_screen()
+    elif me == "H":
+        basic.show_icon(IconNames.SMALL_HEART)
+        radio.send_string("hiding")
+        basic.pause(100)
+        basic.show_icon(IconNames.HEART)
+        basic.pause(100)
+        basic.clear_screen()
 basic.forever(on_forever)
