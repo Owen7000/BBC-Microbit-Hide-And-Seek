@@ -10,6 +10,8 @@ input.onButtonPressed(Button.A, function on_button_pressed_a() {
     } else if (state == "setup" && substate == 1) {
         if (address < 255) {
             address += 1
+        } else {
+            address = 0
         }
         
     }
@@ -30,6 +32,18 @@ radio.onReceivedString(function on_received_string(receivedString: string) {
         signal = radio.receivedPacket(RadioPacketProperty.SignalStrength)
         led.plotBarGraph(Math.map(signal, -95, -42, 0, 9), 9)
         count = 0
+    }
+    
+})
+input.onButtonPressed(Button.B, function on_button_pressed_b() {
+    
+    if (state == "setup" && substate == 1) {
+        if (address > 0) {
+            address += 0 - 1
+        } else {
+            address = 255
+        }
+        
     }
     
 })
